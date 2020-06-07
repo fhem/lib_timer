@@ -1,3 +1,6 @@
+[![codecov](https://codecov.io/gh/fhem/lib_timer/branch/master/graph/badge.svg)](https://codecov.io/gh/fhem/lib_timer)
+![](https://github.com//fhem/lib_timer/workflows/Perl%20Modules%26FHEM%20Unittests/badge.svg?branch=master)
+
 Timer - FHEM lib 
 ======
 
