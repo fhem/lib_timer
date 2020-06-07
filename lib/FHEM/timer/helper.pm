@@ -33,8 +33,8 @@ sub removeTimer {
 	my $defName 	= shift // carp q[No definition name];
 	my $func 		= shift	// undef;
 	my $arg 		= shift	// q{};
-	
-    for my $index (0 .. $#AOT-1) {
+
+    for my $index (0 .. $#AOT) {
      	if ($AOT[$index]->{defName} eq $defName 
 			&& ( !defined $func || $AOT[$index]->{func} eq $func ) 
 			&& ( $arg eq q{} 	|| $AOT[$index]->{arg}	eq $arg) 

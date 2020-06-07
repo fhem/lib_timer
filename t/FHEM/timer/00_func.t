@@ -23,17 +23,20 @@ sub timerCallback
 
 sub timerCallback2
 {
-	fail('this callback should never be called');
+	fail('this timerCallback2 should never be called');
 }
 
 	
 my $count = FHEM::Timer::Helper::addTimer('myName',gettimeofday+2,\&timerCallback,'addTimer test',0);
+is ($count,1,'addtimer returned one');
 $count = FHEM::Timer::Helper::addTimer('myName',gettimeofday+1,\&timerCallback2,'remove timer test',0);
-is(@FHEM::Timer::Helper::AOT,$count,'array has element');
+is ($count,2,'addtimer returned two');
+
 
 FHEM::Timer::Helper::removeTimer('myName');
 
-is(@FHEM::Timer::Helper::AOT,0,'array has no element');
 $count = FHEM::Timer::Helper::addTimer('myName',gettimeofday+2,\&timerCallback,'addTimer test',0);
+is ($count,1,'addtimer returned one');
+
 
 1;
