@@ -32,6 +32,7 @@ jobs:
         cp -r ./lib ${FHEM_DIR}
         cd ${FHEM_DIR}
         prove --exec 'perl -MDevel::Cover=-silent,1 fhem.pl -t' -I FHEM -r -vv  ${GITHUB_WORKSPACE}/t/FHEM/timer/*.t  
+        cp -r ./cover_db ${GITHUB_WORKSPACE}
       env:
         FHEM_DIR: /opt/fhem
     - name: Create clover report  
