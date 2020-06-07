@@ -1,5 +1,5 @@
 # $Id$
-package FHEM::Timer::Helper;
+package FHEM::timer::helper;
 use strict;
 use warnings;
 use utf8;
