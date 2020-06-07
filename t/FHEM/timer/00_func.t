@@ -6,7 +6,7 @@ use Test2::V0;
 use Test2::Tools::Compare qw{is};
 
 
-use FHEM::Timer::Helper;
+use FHEM::timer::helper;
 use Time::HiRes;
 
 
@@ -27,15 +27,15 @@ sub timerCallback2
 }
 
 	
-my $count = FHEM::Timer::Helper::addTimer('myName',gettimeofday+2,\&timerCallback,'addTimer test',0);
+my $count = FHEM::timer::helper::addTimer('myName',gettimeofday+2,\&timerCallback,'addTimer test',0);
 is ($count,1,'addtimer returned one');
-$count = FHEM::Timer::Helper::addTimer('myName',gettimeofday+1,\&timerCallback2,'remove timer test',0);
+$count = FHEM::timer::helper::addTimer('myName',gettimeofday+1,\&timerCallback2,'remove timer test',0);
 is ($count,2,'addtimer returned two');
 
 
-FHEM::Timer::Helper::removeTimer('myName');
+FHEM::timer::helper::removeTimer('myName');
 
-$count = FHEM::Timer::Helper::addTimer('myName',gettimeofday+2,\&timerCallback,'addTimer test',0);
+$count = FHEM::timer::helper::addTimer('myName',gettimeofday+2,\&timerCallback,'addTimer test',0);
 is ($count,1,'addtimer returned one');
 
 
