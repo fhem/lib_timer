@@ -9,23 +9,25 @@ use Carp qw(croak carp);
 
 
 
-my @AOT=();  # ArrayOfTimers
+my %LOT;  # Hash for ListOfTimers
+
 
 sub addTimer {
-	my $defName 	= shift // carp 'No definition name';
-	my $time 		= shift	// carp q[No time specified];
-	my $func 		= shift	// carp q[No function specified];
+	my $defName 	= shift // carp 'No definition name'	 	&& return;
+	my $time 		= shift	// carp q[No time specified] 		&& return;
+	my $func 		= shift	// carp q[No function specified] 	&& return;
 	my $arg 		= shift	// q{};
 	my $initFlag 	= shift	// 0;
 	
 	::InternalTimer($time, $func, $arg, $initFlag);      
 	
 	my %h = (
-			defName => $defName, 
-			arg 	=> $arg, 
-			func 	=> $func,
-		);
-	return push  @AOT, \%h ;
+			arg		 	=> $arg, 
+			func 		=> $func,
+			calltime 	=> $time,
+	);
+
+	return push @{$LOT{$defName}} , \%h;
 }
 
 
@@ -34,15 +36,26 @@ sub removeTimer {
 	my $func 		= shift	// undef;
 	my $arg 		= shift	// q{};
 
-    for my $index (0 .. $#AOT) {
-     	if ($AOT[$index]->{defName} eq $defName 
-			&& ( !defined $func || $AOT[$index]->{func} eq $func ) 
-			&& ( $arg eq q{} 	|| $AOT[$index]->{arg}	eq $arg) 
+	return 0 if ( !exists $LOT{$defName} );
+	
+	my $numRemoved	=	0;
+    for my $index (0 .. scalar @{$LOT{$defName}}-1 ) {
+     	if ( ref $LOT{$defName}[$index] eq 'HASH' && exists	$LOT{$defName}[$index]->{func}
+     		&&	(!defined $func 	|| $LOT{$defName}[$index]->{func} 	== $func ) 
+			&& 	( $arg eq q{} 		|| $LOT{$defName}[$index]->{arg}	eq $arg) 
 		   ) {
-			::RemoveInternalTimer($AOT[$index]->{arg},$AOT[$index]->{func});
-			delete($AOT[$index]);
+			::RemoveInternalTimer($LOT{$defName}[$index]->{arg},$LOT{$defName}[$index]->{func});
+			delete($LOT{$defName}[$index]);
+			$numRemoved++;
 		}  
     }
+	return $numRemoved;
+}
+
+sub optimizeHash
+{
+	
+	
 }
 
 1;
