@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use utf8;
 use Carp qw(croak carp);
+use Time::HiRes;
 
 
 
@@ -52,10 +53,15 @@ sub removeTimer {
 	return $numRemoved;
 }
 
-sub optimizeHash
+sub optimizeLOT
 {
+	my $defName 	= shift // carp q[No definition name];
+	return 0 if ( !exists $LOT{$defName} );
 	
-	
+	my $now= ::gettimeofday();
+	@{$LOT{$defName}} = grep {  $_->{calltime} >= $now  } @{$LOT{$defName}};
+
+	return scalar @{$LOT{$defName}};
 }
 
 1;

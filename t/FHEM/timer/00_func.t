@@ -67,4 +67,11 @@ subtest 'add and remove timer by callback func and arg' => sub {
 	is(FHEM::timer::helper::removeTimer('myName',\&timerCallback2,'other arg'),1,'check only one timer removed');
 };
 
+
+subtest 'optimize ListOFTimers' => sub {
+	is(FHEM::timer::helper::optimizeLOT(),0,'no elements if no name specified');
+	is(FHEM::timer::helper::optimizeLOT('myName'),1,'one element left after optimize');
+
+};
+
 1;
