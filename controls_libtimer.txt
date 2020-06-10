@@ -1,1 +1,1 @@
-UPD 2020-06-08_22:10:32 1516   lib/FHEM/timer/helper.pm
+UPD 2020-06-11_00:04:30 1553   lib/FHEM/timer/Helper.pm
