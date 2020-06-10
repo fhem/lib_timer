@@ -20,7 +20,7 @@ jobs:
       uses: fhem/fhem-controls-actions@master
       with:
         filename: controls_libtimer.txt 
-        directory: lib/FHEM/timer
+        directory: lib/FHEM/Timer
     - name: update CHANGED
       run: |
         LOG=$(date +"%Y-%m-%d") 
