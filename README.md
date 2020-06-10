@@ -11,7 +11,7 @@ FHEM lib  for developers who want to easy managing internalTimers
 
 How to install
 ======
-
+update all https://raw.githubusercontent.com/fhem/lib_timer/master/controls_libtimer.txt
 
 How To use this?
 =====
