@@ -1,15 +1,12 @@
 # $Id$
-package FHEM::timer::helper;
+package FHEM::Timer::Helper;
 use strict;
 use warnings;
 use utf8;
 use Carp qw(croak carp);
 use Time::HiRes;
 
-
-
-
-
+use version; our $VERSION = qv('1.0.0');
 my %LOT;  # Hash for ListOfTimers
 
 
