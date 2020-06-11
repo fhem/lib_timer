@@ -2,13 +2,16 @@ name: Perl Modules&FHEM Unittests
 on: [push]
 
 jobs:
-  libModTests:
+ libModTests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         os: ['ubuntu-latest']
         perl: [ '5.22', '5.24', '5.26' ]
     name: Perl ${{ matrix.perl }} on ${{ matrix.os }}
+    env:
+      FHEM_DIR: /opt/fhem  
+      TEST_FILES: t/FHEM/Timer/*.t  
     steps:
     - uses: actions/checkout@master
     - uses: shogo82148/actions-setup-perl@v1
@@ -31,10 +34,8 @@ jobs:
       run: |
         cp -r ./lib ${FHEM_DIR}
         cd ${FHEM_DIR}
-        prove --exec 'perl -MDevel::Cover=-silent,1 fhem.pl -t' -I FHEM -r -vv  ${GITHUB_WORKSPACE}/t/FHEM/Timer/*.t  
+        prove --exec 'perl -MDevel::Cover=-silent,1 fhem.pl -t' -I FHEM -r -vv  ${GITHUB_WORKSPACE}/${TEST_FILES}  
         cp -r ./cover_db ${GITHUB_WORKSPACE}
-      env:
-        FHEM_DIR: /opt/fhem
     - name: Create clover report  
       run: cover -report clover
     - uses: codecov/codecov-action@v1

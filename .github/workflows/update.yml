@@ -4,10 +4,11 @@ on: [push]
 
 jobs:
   update:
-    env:
-      CONTROLS_FILENAME: controls_libtimer.txt 
     runs-on: ubuntu-latest
     steps: 
+    env:
+      CONTROLS_FILENAME: controls_libtimer.txt 
+      CHANGED_FILENAME: CHANGED 
     - name: Extract branch name
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
@@ -25,14 +26,14 @@ jobs:
       run: |
         LOG=$(date +"%Y-%m-%d") 
         LOG+=" - $(git log -1 --pretty=%B)"
-        echo "$LOG" | cat - CHANGED > temp && mv temp CHANGED
+        echo "$LOG" | cat - ${CHANGED_FILENAME} > temp && mv temp ${CHANGED_FILENAME}
     - name: git commit back
       run: |
         git config --global user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git ls-files --error-unmatch controls_libtimer.txt || git add controls_libtimer.txt 
-        git ls-files --error-unmatch CHANGED || git add CHANGED
-        git diff --name-only --exit-code controls_libtimer.txt || git commit CHANGED controls_libtimer.txt -m "Automatic updated controls and CHANGED" || true
+        git ls-files --error-unmatch ${CONTROLS_FILENAME} || git add ${CONTROLS_FILENAME} 
+        git ls-files --error-unmatch ${CHANGED_FILENAME} || git add ${CHANGED_FILENAME}
+        git diff --name-only --exit-code ${CONTROLS_FILENAME} || git commit ${CHANGED_FILENAME} ${CONTROLS_FILENAME} -m "Automatic updated controls and CHANGED" || true
     - name: git push
       uses: ad-m/github-push-action@master
       with:
