@@ -6,9 +6,9 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps: 
-    env:
-      CONTROLS_FILENAME: controls_libtimer.txt 
-      CHANGED_FILENAME: CHANGED 
+      env:
+        CONTROLS_FILENAME: controls_libtimer.txt 
+        CHANGED_FILENAME: CHANGED 
     - name: Extract branch name
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
