@@ -1,0 +1,90 @@
+name: Repository CI Workflow
+on: 
+  push:
+    paths-ignore:
+    - 'controls*'
+    - 'CHANGED'
+    - 'README*'
+    - 'LICENSE'
+jobs:
+ libModTests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: ['ubuntu-latest']
+        perl: [ '5.22', '5.24', '5.26' ]
+    name: Perl ${{ matrix.perl }} on ${{ matrix.os }}
+    env:
+      FHEM_DIR: /opt/fhem  
+      TEST_FILES: t/FHEM/Core/Timer/*.t  
+    steps:
+    - uses: actions/checkout@master
+    - uses: shogo82148/actions-setup-perl@v1
+      with:
+        perl-version: ${{ matrix.perl }}
+    - run: |
+        cpanm --notest --installdeps .
+        cpanm --notest Devel::Cover::Report::Clover
+    - name: install fhem via deb package
+      run: |
+        wget -qO - http://debian.fhem.de/archive.key | sudo apt-key add -
+        echo "deb http://debian.fhem.de/nightly/ /" | sudo tee -a /etc/apt/sources.list
+        sudo apt-get update -qq
+        sudo apt-get install fhem -y
+        sudo chown -R --reference=cpanfile /opt/fhem
+        sudo systemctl stop fhem
+#    - name: Setup tmate session
+#      uses: mxschmitt/action-tmate@v1
+    - name: run prove fhem testsuite ${{ matrix.perl }}
+      run: |
+        cp -r ./lib ${FHEM_DIR}
+        cd ${FHEM_DIR}
+        prove --exec 'perl -MDevel::Cover=-silent,1 fhem.pl -t' -I FHEM -r -vv  ${GITHUB_WORKSPACE}/${TEST_FILES}  
+        cp -r ./cover_db ${GITHUB_WORKSPACE}
+    - name: Create clover report  
+      run: cover -report clover
+    - uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./cover_db/clover.xml
+        flags: unittests,fhem,modules
+        name: fhem (testscripts) ${{ matrix.perl }}
+ controls_file:
+    needs:
+      - libModTests
+    runs-on: ubuntu-latest
+    env:
+     CONTROLS_FILENAME: controls_libtimer.txt 
+     CHANGED_FILENAME: CHANGED 
+    steps: 
+    - name: Extract branch name
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+    - name: Checkout Repostory
+      uses: actions/checkout@master
+      with:
+        fetch-depth: 0
+        persist-credentials: false
+    - name: update controls files
+      uses: fhem/fhem-controls-actions@master
+      with:
+        filename: controls_libtimer.txt 
+        directory: lib/FHEM/Core/Timer
+    - name: update CHANGED
+      run: |
+        LOG=$(date +"%Y-%m-%d") 
+        LOG+=" - $(git log -1 --pretty=%B)"
+        echo "$LOG" | cat - ${CHANGED_FILENAME} > temp && mv temp ${CHANGED_FILENAME}
+    - name: git commit back
+      run: |
+        git config --global user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git ls-files --error-unmatch ${CONTROLS_FILENAME} || git add ${CONTROLS_FILENAME} 
+        git ls-files --error-unmatch ${CHANGED_FILENAME} || git add ${CHANGED_FILENAME}
+        git diff --name-only --exit-code ${CONTROLS_FILENAME} || git commit ${CHANGED_FILENAME} ${CONTROLS_FILENAME} -m "Automatic updated controls and CHANGED" || true
+    - name: git push
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GH_TOKEN }}
+        branch: ${{ steps.extract_branch.outputs.branch }}
+       

@@ -1,3 +1,6 @@
+2020-06-11 - lib\FHEM\Core\Timer\Helper.pm
+
+Change namespace to FHEM::Core::Timer::Helper
 2020-06-10 - .github\workflows\update.yml
 
 updated directory

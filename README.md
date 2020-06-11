@@ -15,8 +15,16 @@ update all https://raw.githubusercontent.com/fhem/lib_timer/master/controls_libt
 
 How To use this?
 =====
-Import the package into your package directly or via eval as needed:
-`use FHEM::Timer::Helper;` or `eval { use FHEM::Timer::Helper;1 } ;`
+### Load Package
+
+Load the package into your package directly or via eval as needed:
+`use FHEM::Core::Timer::Helper;`
+
+or 
+
+`eval { use FHEM::Core::Timer::Helper;1 } ;`
+
+### Function overview
 
 Function overview:
 | function     | description  |
@@ -25,12 +33,14 @@ Function overview:
 | removeTimer | removes a timer |
 | optimizeLOT | optimizes internal data storage to reduce memory overhead |
 
-
+### addTimer
 
 Instead of calling InternalTimer you add the Timer with this command:
-addTimer($name,$timestamp, $coderef, $arg, $waitIfInitNotDone);
+
+**addTimer($name,$timestamp, $coderef, $arg, $waitIfInitNotDone);**
+
 Example:
-`FHEM::Timer::Helper::addTimer($hash{NAME}, time(), \&someSub,"paramsGoesHere",0 );`
+`FHEM::Core::Timer::Helper::addTimer($hash{NAME}, time(), \&someSub,"paramsGoesHere",0 );`
 | parameter     | required | description  |
 | ------------- |:-------------:| -----:|
 | $name                 |mandatory   |A name or identifier to specify for this Timer|
@@ -40,16 +50,28 @@ Example:
 | $waitIfInitNotDone    |operional   |Blocks FHEM until $timestamp is reached, use it only if really needed|
 
 
+### removeTimer
 
 Instead of calling RemoveInternalTimer you can remove Timers with this command:
-removeTimer($name,$function); 
+
+**removeTimer($name,$function);** 
 
 Example:
-`  FHEM::Timer::Helper::removeTimer($name); ` to delete all timers which are added via `addTimer($name,...);`
+`  FHEM::Core::Timer::Helper::removeTimer($name); ` to delete all timers which are added via `addTimer($name,...);`
 | parameter     | required | description  |
 | ------------- |:-------------:| -----:|
 | $name                 |mandatory   |Search filter of added timers under $name |
 | $functionRef          |optional    |filters to timers which are referencing to this codered |
 | $arg                  |optional    |filters to arguments which are passed to a internaltimer |
 
+### optimizeLOT
 
+Call optimizeLOT if some of the timers are finished to clean up some memory:
+
+**optimizeLOT($name);** 
+Example:
+`  FHEM::Core::Timer::Helper::optimizeLOT($name); ` to delete all old timers`
+
+| parameter     | required | description  |
+| ------------- |:-------------:| -----:|
+| $name                 |mandatory   | filter of added timers under $name |
