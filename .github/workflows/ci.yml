@@ -1,6 +1,11 @@
 name: Repository CI Workflow
-on: [push]
-
+on: 
+  push:
+    paths-ignore:
+    - 'controls*'
+    - 'CHANGED'
+    - 'README*'
+    - 'LICENSE'
 jobs:
  libModTests:
     runs-on: ubuntu-latest
