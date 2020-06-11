@@ -16,7 +16,9 @@ update all https://raw.githubusercontent.com/fhem/lib_timer/master/controls_libt
 How To use this?
 =====
 Import the package into your package directly or via eval as needed:
-`use FHEM::Timer::Helper;` or `eval { use FHEM::Timer::Helper;1 } ;`
+`use FHEM::Core::Timer::Helper;`
+or 
+`eval { use FHEM::Core::Timer::Helper;1 } ;`
 
 Function overview:
 | function     | description  |
@@ -30,7 +32,7 @@ Function overview:
 Instead of calling InternalTimer you add the Timer with this command:
 addTimer($name,$timestamp, $coderef, $arg, $waitIfInitNotDone);
 Example:
-`FHEM::Timer::Helper::addTimer($hash{NAME}, time(), \&someSub,"paramsGoesHere",0 );`
+`FHEM::Core::Timer::Helper::addTimer($hash{NAME}, time(), \&someSub,"paramsGoesHere",0 );`
 | parameter     | required | description  |
 | ------------- |:-------------:| -----:|
 | $name                 |mandatory   |A name or identifier to specify for this Timer|
@@ -45,7 +47,7 @@ Instead of calling RemoveInternalTimer you can remove Timers with this command:
 removeTimer($name,$function); 
 
 Example:
-`  FHEM::Timer::Helper::removeTimer($name); ` to delete all timers which are added via `addTimer($name,...);`
+`  FHEM::Core::Timer::Helper::removeTimer($name); ` to delete all timers which are added via `addTimer($name,...);`
 | parameter     | required | description  |
 | ------------- |:-------------:| -----:|
 | $name                 |mandatory   |Search filter of added timers under $name |
