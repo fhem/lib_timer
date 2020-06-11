@@ -1,3 +1,6 @@
+2020-06-11 - Dir change (#2)
+
+Change namespace to FHEM::Core::Timer::Helper
 2020-06-11 - lib\FHEM\Core\Timer\Helper.pm
 
 Change namespace to FHEM::Core::Timer::Helper
