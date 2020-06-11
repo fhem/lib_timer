@@ -3,39 +3,3 @@ name: controlsFile
 on: [push]
 
 jobs:
-  update:
-    runs-on: ubuntu-latest
-    env:
-     CONTROLS_FILENAME: controls_libtimer.txt 
-     CHANGED_FILENAME: CHANGED 
-    steps: 
-    - name: Extract branch name
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      id: extract_branch
-    - name: Checkout Repostory
-      uses: actions/checkout@master
-      with:
-        fetch-depth: 0
-        persist-credentials: false
-    - name: update controls files
-      uses: fhem/fhem-controls-actions@master
-      with:
-        filename: controls_libtimer.txt 
-        directory: lib/FHEM/Timer
-    - name: update CHANGED
-      run: |
-        LOG=$(date +"%Y-%m-%d") 
-        LOG+=" - $(git log -1 --pretty=%B)"
-        echo "$LOG" | cat - ${CHANGED_FILENAME} > temp && mv temp ${CHANGED_FILENAME}
-    - name: git commit back
-      run: |
-        git config --global user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git ls-files --error-unmatch ${CONTROLS_FILENAME} || git add ${CONTROLS_FILENAME} 
-        git ls-files --error-unmatch ${CHANGED_FILENAME} || git add ${CHANGED_FILENAME}
-        git diff --name-only --exit-code ${CONTROLS_FILENAME} || git commit ${CHANGED_FILENAME} ${CONTROLS_FILENAME} -m "Automatic updated controls and CHANGED" || true
-    - name: git push
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GH_TOKEN }}
-        branch: ${{ steps.extract_branch.outputs.branch }}
