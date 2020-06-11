@@ -32,7 +32,9 @@ Function overview:
 
 
 Instead of calling InternalTimer you add the Timer with this command:
-addTimer($name,$timestamp, $coderef, $arg, $waitIfInitNotDone);
+
+**addTimer($name,$timestamp, $coderef, $arg, $waitIfInitNotDone);**
+
 Example:
 `FHEM::Core::Timer::Helper::addTimer($hash{NAME}, time(), \&someSub,"paramsGoesHere",0 );`
 | parameter     | required | description  |
@@ -46,7 +48,8 @@ Example:
 
 
 Instead of calling RemoveInternalTimer you can remove Timers with this command:
-removeTimer($name,$function); 
+
+**removeTimer($name,$function);** 
 
 Example:
 `  FHEM::Core::Timer::Helper::removeTimer($name); ` to delete all timers which are added via `addTimer($name,...);`
