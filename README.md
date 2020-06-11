@@ -17,7 +17,9 @@ How To use this?
 =====
 Import the package into your package directly or via eval as needed:
 `use FHEM::Core::Timer::Helper;`
+
 or 
+
 `eval { use FHEM::Core::Timer::Helper;1 } ;`
 
 Function overview:
