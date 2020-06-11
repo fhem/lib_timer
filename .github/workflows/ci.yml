@@ -1,4 +1,4 @@
-name: Perl Modules&FHEM Unittests
+name: Repository CI Workflow
 on: [push]
 
 jobs:
@@ -44,7 +44,9 @@ jobs:
         file: ./cover_db/clover.xml
         flags: unittests,fhem,modules
         name: fhem (testscripts) ${{ matrix.perl }}
- update:
+ controls_file:
+    needs:
+      - libModTests
     runs-on: ubuntu-latest
     env:
      CONTROLS_FILENAME: controls_libtimer.txt 
