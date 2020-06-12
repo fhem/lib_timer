@@ -58,11 +58,12 @@ Instead of calling RemoveInternalTimer you can remove Timers with this command:
 
 Example:
 `  FHEM::Core::Timer::Helper::removeTimer($name); ` to delete all timers which are added via `addTimer($name,...);`
-| parameter     | required | description  |
-| ------------- |:-------------:| -----:|
-| $name                 |mandatory   |Search filter of added timers under $name |
-| $functionRef          |optional    |filters to timers which are referencing to this codered |
-| $arg                  |optional    |filters to arguments which are passed to a internaltimer |
+
+| Parameter        | Required?      | Description  |
+| :--------------- | :------------- | :------------|
+| `$name`          | mandatory      | Remove timers with the name `$name` |
+| `$function_ref`  | optional       | Remove only timers with name `$name` and set by `$function_ref` |
+| `$arg`           | optional       | Remove only timers with name `$name` and set with `$arg` |
 
 ### optimizeLOT
 
