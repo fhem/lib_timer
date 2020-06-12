@@ -4,17 +4,17 @@
 Timer - FHEM lib 
 ======
 
-
 FHEM lib  for developers who want to easy managing internalTimers
-
 
 
 How to install
 ======
-update all https://raw.githubusercontent.com/fhem/lib_timer/master/controls_libtimer.txt
+
+Issue `update all https://raw.githubusercontent.com/fhem/lib_timer/master/controls_libtimer.txt` at the FHEM command line
 
 How To use this?
 =====
+
 ### Load Package
 
 Load the package into your package directly or via eval as needed:
@@ -27,27 +27,29 @@ or
 ### Function overview
 
 Function overview:
-| function     | description  |
-| ------------- |:-------------:| 
-| addTimer    | add a timer |
-| removeTimer | removes a timer |
-| optimizeLOT | optimizes internal data storage to reduce memory overhead |
+| Function        | Description  |
+| :-------------- |:------------ | 
+| `addTimer()`    | Adds a timer |
+| `removeTimer()` | Removes a timer |
+| `optimizeLOT()` | Optimizes internal data storage to reduce memory overhead |
 
 ### addTimer
 
-Instead of calling InternalTimer you add the Timer with this command:
+Instead of calling FHEMs `InternalTimer()` you can add a timer with `addTimer()`:
 
-**addTimer($name,$timestamp, $coderef, $arg, $waitIfInitNotDone);**
+**addTimer($name,$timestamp, $function_ref, $arg, $waitIfInitNotDone);**
 
 Example:
-`FHEM::Core::Timer::Helper::addTimer($hash{NAME}, time(), \&someSub,"paramsGoesHere",0 );`
-| parameter     | required | description  |
-| ------------- |:-------------:| -----:|
-| $name                 |mandatory   |A name or identifier to specify for this Timer|
-| $timestamp            |mandatory   |Unix timestamp when the timer should run|
-| $functionRef          |mandatory   |Is a codref to some code to run / call after $timestamp is reache|
-| $arg                  |optional    |Arguments you pass to the coderef, default = {} |
-| $waitIfInitNotDone    |operional   |Blocks FHEM until $timestamp is reached, use it only if really needed|
+
+`FHEM::Core::Timer::Helper::addTimer( $hash{NAME}, time(), \&do_something, { argument => q{value} }, 0 );`
+
+| Parameter             | Required?   | Description  |
+| :---------------------|:----------- | :----------  |
+| `$name`               | mandatory   | A label for this timer|
+| `$timestamp`          | mandatory   | Unix timestamp when the timer should run|
+| `$function_ref`       | mandatory   | Is a codref to some code to run / call if `$timestamp` is reached|
+| `$arg`                | optional    | Arguments passed to the `$function_ref`, default = `q{}`(empty string) |
+| `$waitIfInitNotDone`  | optional    | **Blocks** FHEM until `$timestamp` is reached, use it only if really needed|
 
 
 ### removeTimer
@@ -58,20 +60,22 @@ Instead of calling RemoveInternalTimer you can remove Timers with this command:
 
 Example:
 `  FHEM::Core::Timer::Helper::removeTimer($name); ` to delete all timers which are added via `addTimer($name,...);`
-| parameter     | required | description  |
-| ------------- |:-------------:| -----:|
-| $name                 |mandatory   |Search filter of added timers under $name |
-| $functionRef          |optional    |filters to timers which are referencing to this codered |
-| $arg                  |optional    |filters to arguments which are passed to a internaltimer |
+
+| Parameter        | Required?      | Description  |
+| :--------------- | :------------- | :------------|
+| `$name`          | mandatory      | Remove timers with the name `$name` |
+| `$function_ref`  | optional       | Remove only timers with name `$name` and set by `$function_ref` |
+| `$arg`           | optional       | Remove only timers with name `$name` and set with `$arg` |
 
 ### optimizeLOT
 
-Call optimizeLOT if some of the timers are finished to clean up some memory:
+Call `optimizeLOT()` if some of the timers are finished to free up some memory:
 
 **optimizeLOT($name);** 
-Example:
-`  FHEM::Core::Timer::Helper::optimizeLOT($name); ` to delete all old timers`
 
-| parameter     | required | description  |
-| ------------- |:-------------:| -----:|
-| $name                 |mandatory   | filter of added timers under $name |
+Example:
+`FHEM::Core::Timer::Helper::optimizeLOT(q{my_timer);`
+
+| Parameter     | Required? | Description |
+| :------------ | :-------  | :---------- |
+| `$name`       | mandatory | Delete timers with name `$name` |
