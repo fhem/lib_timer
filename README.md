@@ -35,19 +35,21 @@ Function overview:
 
 ### addTimer
 
-Instead of calling InternalTimer you add the Timer with this command:
+Instead of calling FHEMs `InternalTimer()` you can add a timer with `addTimer()`:
 
-**addTimer($name,$timestamp, $coderef, $arg, $waitIfInitNotDone);**
+**addTimer($name,$timestamp, $function_ref, $arg, $waitIfInitNotDone);**
 
 Example:
+
 `FHEM::Core::Timer::Helper::addTimer( $hash{NAME}, time(), \&do_something, { argument => q{value} }, 0 );`
-| parameter     | required | description  |
-| ------------- |:-------------:| -----:|
-| $name                 |mandatory   | A label for this timer|
-| $timestamp            |mandatory   | Unix timestamp when the timer should run|
-| $function_ref         |mandatory   | Is a codref to some code to run / call if `$timestamp` is reached|
-| $arg                  |optional    | Hash with arguments, passed to the `$function_ref`, default = `{}`(empty hash) |
-| $waitIfInitNotDone    |optional    | **Blocks** FHEM until `$timestamp` is reached, use it only if really needed|
+
+| Parameter             | Required?   | Description  |
+| :---------------------|:----------- | :----------  |
+| `$name`               | mandatory   | A label for this timer|
+| `$timestamp`          | mandatory   | Unix timestamp when the timer should run|
+| `$function_ref`       | mandatory   | Is a codref to some code to run / call if `$timestamp` is reached|
+| `$arg`                | optional    | Hash with arguments, passed to the `$function_ref`, default = `{}`(empty hash) |
+| `$waitIfInitNotDone`  | optional    | **Blocks** FHEM until `$timestamp` is reached, use it only if really needed|
 
 
 ### removeTimer
