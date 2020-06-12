@@ -4,17 +4,17 @@
 Timer - FHEM lib 
 ======
 
-
 FHEM lib  for developers who want to easy managing internalTimers
-
 
 
 How to install
 ======
-update all https://raw.githubusercontent.com/fhem/lib_timer/master/controls_libtimer.txt
+
+Issue `update all https://raw.githubusercontent.com/fhem/lib_timer/master/controls_libtimer.txt` at the FHEM command line
 
 How To use this?
 =====
+
 ### Load Package
 
 Load the package into your package directly or via eval as needed:
