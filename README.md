@@ -69,12 +69,13 @@ Example:
 
 ### optimizeLOT
 
-Call optimizeLOT if some of the timers are finished to clean up some memory:
+Call `optimizeLOT()` if some of the timers are finished to free up some memory:
 
 **optimizeLOT($name);** 
-Example:
-`  FHEM::Core::Timer::Helper::optimizeLOT($name); ` to delete all old timers`
 
-| parameter     | required | description  |
-| ------------- |:-------------:| -----:|
-| $name                 |mandatory   | filter of added timers under $name |
+Example:
+`FHEM::Core::Timer::Helper::optimizeLOT(q{my_timer);`
+
+| Parameter     | Required? | Description |
+| :------------ | :-------  | :---------- |
+| `$name`       | mandatory | Delete timers with name `$name` |
