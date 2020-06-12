@@ -27,11 +27,11 @@ or
 ### Function overview
 
 Function overview:
-| function     | description  |
-| ------------- |:-------------:| 
-| addTimer    | add a timer |
-| removeTimer | removes a timer |
-| optimizeLOT | optimizes internal data storage to reduce memory overhead |
+| Function        | Description  |
+| :-------------- |:------------ | 
+| `addTimer()`    | Adds a timer |
+| `removeTimer()` | Removes a timer |
+| `optimizeLOT()` | Optimizes internal data storage to reduce memory overhead |
 
 ### addTimer
 
