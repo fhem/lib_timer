@@ -48,7 +48,7 @@ Example:
 | `$name`               | mandatory   | A label for this timer|
 | `$timestamp`          | mandatory   | Unix timestamp when the timer should run|
 | `$function_ref`       | mandatory   | Is a codref to some code to run / call if `$timestamp` is reached|
-| `$arg`                | optional    | Hash with arguments, passed to the `$function_ref`, default = `{}`(empty hash) |
+| `$arg`                | optional    | Arguments passed to the `$function_ref`, default = `q{}`(empty string) |
 | `$waitIfInitNotDone`  | optional    | **Blocks** FHEM until `$timestamp` is reached, use it only if really needed|
 
 
