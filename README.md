@@ -6,6 +6,9 @@ Timer - FHEM lib
 
 FHEM lib  for developers who want to easy managing internalTimers
 
+This Package, uses FHEM InternalTimer function, to add timers under a given identifier
+With removeTimer there is an option to remove all timers belonging to this identifier.
+So no need to manage this by your own, what timers where started.
 
 How to install
 ======
