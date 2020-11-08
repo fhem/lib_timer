@@ -54,6 +54,26 @@ Example:
 | `$arg`                | optional    | Arguments passed to the `$function_ref`, default = `q{}`(empty string) |
 | `$waitIfInitNotDone`  | optional    | **Blocks** FHEM until `$timestamp` is reached, use it only if really needed|
 
+Returnvalue:
+Returns Index of added timer to specify it later user directly
+
+### getTimerByIndex
+If you need all your passed arguments for a timer identified by a index you can use this function.
+
+**getTimerByIndex($name,$index);**
+
+Example:
+
+`FHEM::Core::Timer::Helper::getTimerByIndex( $hash{NAME}, 2);`
+
+| Parameter             | Required?   | Description  |
+| :---------------------|:----------- | :----------  |
+| `$name`               | mandatory   | A label for this timer|
+| `$index`              | mandatory   | The index under which the timer was added |
+
+Returnvalue:
+Returns hash with fields 'arg' which is the passed arg via addTimer, 'func' which is a coderef passed via function_ref arg via addTimer, and 'calltime' which is timestamp passed via timestamp arg via addTimer
+
 
 ### removeTimer
 
