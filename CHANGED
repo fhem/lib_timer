@@ -1,3 +1,6 @@
+2020-12-04 - lib\FHEM\Core\Timer\Helper.pm
+
+code change to remove perl warning "scalar context better written as"
 2020-12-04 - Merge branch 'feature-timerManagement' of github.com:fhem/lib_timer into feature-timerManagement
 2020-11-08 - Added some basic things to allow timermanagement
 
