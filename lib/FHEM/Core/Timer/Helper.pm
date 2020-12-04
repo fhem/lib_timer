@@ -29,7 +29,7 @@ sub addTimer {
 	);
 
 	
-	::InternalTimer(%h{calltime}, %h{func}, %h{arg} , %h{initflag});      
+	::InternalTimer($h{calltime}, $h{func}, $h{arg} , $h{initflag});      
 
     return (push @{$LOT{$defName}} , \%h) -1; # Returns Index of added timer, not anymore number of added timers
 }
