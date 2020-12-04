@@ -1,1 +1,1 @@
-UPD 2020-11-08_22:36:15 2141   lib/FHEM/Core/Timer/Helper.pm
+UPD 2020-12-04_18:43:52 2585   lib/FHEM/Core/Timer/Helper.pm

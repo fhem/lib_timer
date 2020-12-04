@@ -1,3 +1,4 @@
+2020-12-04 - Merge branch 'feature-timerManagement' of github.com:fhem/lib_timer into feature-timerManagement
 2020-11-08 - Added some basic things to allow timermanagement
 
 addTimer now returns the index of the element added and not any longer the number of entrys in the array
