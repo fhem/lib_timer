@@ -25,33 +25,41 @@ sub addTimer {
 			arg		 	=> $arg, 
 			func 		=> $func,
 			calltime 	=> $time,
+			initflag 	=> $initFlag,
 	);
 
 	
-	::InternalTimer($time, $func, $arg , $initFlag);      
+	::InternalTimer(%h{calltime}, %h{func}, %h{arg} , %h{initflag});      
 
-	return (push @{$LOT{$defName}} , \%h) -1; # Returns Index of added timer, not anymore number of added timers
+    return (push @{$LOT{$defName}} , \%h) -1; # Returns Index of added timer, not anymore number of added timers
 }
 
 sub getTimerByIndex{
-	my $defName 	= shift // carp q[No definition name];
-	my $index 		= shift	// carp q[No definition name];
+    my $defName 	= shift // carp q[No definition name];
+    my $index 		= shift	// carp q[No index defined];
 
-	return $LOT{$defName}[$index] if ( exists $LOT{$defName}[$index] );
+    return $LOT{$defName}[$index] if ( exists $LOT{$defName}[$index] );
 }
 
 sub renewTimer {
-	my $defName 	= shift // carp q[No definition name];
-	my $func 		= shift	// undef;
-	my $arg 		= shift	// q{};
+    my $TimerHash   = shift ;
+    my $newtime 	= shift	// carp q[No new time specified] && return;
+    
+    if ( !ref($TimerHash) eq 'HASH' || !exists ($TimerHash->{arg}) || !exists ($TimerHash->{func}) || !exists ($TimerHash->{calltime}) ) 
+    {
+        carp q[No valid timerhash as argument specified, aborting removeTimer];
+        return ;
+    }
 
-	return 0 if ( !exists $LOT{$defName} );
-	
-	#Todo write some code here
-	
+    ::RemoveInternalTimer($TimerHash->{arg},$TimerHash->{func});
+    ::InternalTimer($newtime, $TimerHash->{func}, $TimerHash->{arg} , $TimerHash->{initFlag});      
+
+    $TimerHash->{calltime}=$newtime;
+    return 1;
 }
 
 sub removeTimer {
+	
 	my $defName 	= shift // carp q[No definition name];
 	my $func 		= shift	// undef;
 	my $arg 		= shift	// q{};
@@ -69,7 +77,7 @@ sub removeTimer {
 			$numRemoved++;
 		}  
     }
-	return $numRemoved;
+    return $numRemoved;
 }
 
 

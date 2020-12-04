@@ -27,7 +27,7 @@ sub timerCallback2
 my $count;
 
 subtest 'Add two timers ' => sub {
-	$count = addTimer('myName',gettimeofday+2,\&timerCallback,'addTimer test',0);
+	$count = addTimer('myName',gettimeofday+1,\&timerCallback,'addTimer test',0);
 	is ($count,0,'addtimer returned zero');
 	$count = addTimer('myName',gettimeofday+1,\&timerCallback2,'remove timer test',0);
 	is ($count,1,'addtimer returned one');
@@ -39,7 +39,8 @@ subtest 'Remove all timers for myName' => sub {
 };
 
 subtest 'add Timer for myName to end test in 2 secs' => sub {
-	is(addTimer('myName',gettimeofday+2,\&timerCallback,'timer called test',0),0,'one timer in list');
+	# This will end the Test successfull
+	is(addTimer('myName',gettimeofday+3,\&timerCallback,'timer called test',0),0,'one timer in list');
 };
 
 
@@ -61,14 +62,19 @@ subtest 'add and remove timer by callback func and arg' => sub {
 	$count = addTimer('myName',gettimeofday+1,\&timerCallback2,'addTimer test',0);
 	$count = addTimer('myName',gettimeofday+1,\&timerCallback2,'other arg',0);
 	is ($count,2,'addtimer returned index two (three timers)');
-	
-	is (getTimerByIndex('myName',$count),hash { 
+
+	my $timerhash = getTimerByIndex('myName',$count);
+	ref_ok ($timerhash,'HASH','must be a hashref');
+
+	is ($timerhash,hash { 
      	  field arg => 'other arg'; 
      	  field func => \&timerCallback2; 
      	  field calltime => D();
+     	  field initflag => 0;
 		  end(); 
 	    },
 		'verify hash of timer index 2');
+
 	is(removeTimer('myName',\&timerCallback2,'addTimer test'),1,'check only one timer removed');
 	is(removeTimer('myName',\&timerCallback2,'other arg'),1,'check only one timer removed');
 };
@@ -78,5 +84,16 @@ subtest 'optimize ListOFTimers' => sub {
 	is(FHEM::Core::Timer::Helper::optimizeLOT(),0,'no elements if no name specified');
 	is(FHEM::Core::Timer::Helper::optimizeLOT('myName'),1,'one element left after optimize');
 };
+
+
+subtest 'renew a timer' => sub {
+	$count = addTimer('myName',gettimeofday+1,\&timerCallback2,'Timer Added',0);
+    my $timerhash = getTimerByIndex('myName',$count);
+    my $newtime=gettimeofday+5; # This callback wont be called, because we will end the testset sooner, see "add Timer for myName to end test in 2 secs"
+    ok(FHEM::Core::Timer::Helper::renewTimer($timerhash,$newtime),'renewTimer successfull');
+    is($timerhash,hash { field calltime => $newtime; etc(); },'check time stored for timer');
+    
+};
+
 
 1;
