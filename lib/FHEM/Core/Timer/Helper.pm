@@ -11,7 +11,7 @@ my %LOT;  # Hash for ListOfTimers
 
 use Exporter qw(import);
  
-our @EXPORT_OK = qw(addTimer removeTimer optimizeLOT getTimerByIndex); 
+our @EXPORT_OK = qw(addTimer removeTimer optimizeLOT getTimerByIndex renewTimer); 
 
 sub addTimer {
 	my $defName 	= shift // carp 'No definition name'	 	&& return;
