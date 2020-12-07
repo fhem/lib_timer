@@ -1,3 +1,6 @@
+2020-12-07 - lib\FHEM\Core\Timer\Helper.pm
+
+Updated exporter
 2020-12-04 - lib\FHEM\Core\Timer\Helper.pm
 
 code change to remove perl warning "scalar context better written as"
