@@ -96,4 +96,20 @@ subtest 'renew a timer' => sub {
 };
 
 
+subtest 'delete and try renew this timer' => sub {
+	$count = addTimer('myName',gettimeofday+1,\&timerCallback2,'to be removed',0);
+   	is(removeTimer('myName',\&timerCallback2,'to be removed'),1,'check number of removed timers');
+    my $timerhash = FHEM::Core::Timer::Helper::getTimerByIndex('myName',$count);
+    is ($timerhash,U(),'check if timerhash is undef');
+    
+    use Data::Dumper;
+    print ($timerhash);
+    
+    my $newtime=gettimeofday+0; # This callback wont be called, because we will end the testset sooner, see "add Timer for myName to end test in 2 secs"
+    is(FHEM::Core::Timer::Helper::renewTimer($timerhash,$newtime),U(),'renewTimer successfull');
+    isnt($timerhash,hash { field calltime => $newtime; etc(); },'check time stored for timer');
+    
+};
+
+
 1;

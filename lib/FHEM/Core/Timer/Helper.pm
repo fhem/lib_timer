@@ -39,13 +39,19 @@ sub getTimerByIndex{
     my $index 		= shift	// carp q[No index defined];
 
     return $LOT{$defName}[$index] if ( exists $LOT{$defName}[$index] );
+
+    return ;
+}
+
+sub renewTimerByIndex {
+
 }
 
 sub renewTimer {
-    my $TimerHash   = shift ;
+    my $TimerHash   = shift // carp q[undef arg provided as $TimerHash] && return;
     my $newtime 	= shift	// carp q[No new time specified] && return;
     
-    if ( !ref($TimerHash) eq 'HASH' || !exists ($TimerHash->{arg}) || !exists ($TimerHash->{func}) || !exists ($TimerHash->{calltime}) ) 
+    if ( !ref($TimerHash) eq 'HASH' || !exists $TimerHash->{arg} || !exists $TimerHash->{func} || !exists $TimerHash->{calltime} ) 
     {
         carp q[No valid timerhash as argument specified, aborting removeTimer];
         return ;
@@ -59,23 +65,22 @@ sub renewTimer {
 }
 
 sub removeTimer {
-	
-	my $defName 	= shift // carp q[No definition name];
-	my $func 		= shift	// undef;
-	my $arg 		= shift	// q{};
+    my $defName 	= shift // carp q[No definition name];
+    my $func 		= shift	// undef;
+    my $arg 		= shift	// q{};
 
-	return 0 if ( !exists $LOT{$defName} );
+    return 0 if ( !exists $LOT{$defName} );
 	
-	my $numRemoved	=	0;
+    my $numRemoved	=	0;
     for my $index (0 .. scalar @{$LOT{$defName}}-1 ) {
-     	if ( ref $LOT{$defName}[$index] eq 'HASH' && exists	$LOT{$defName}[$index]->{func}
-     		&&	(!defined $func 		|| $LOT{$defName}[$index]->{func} 		== $func ) 
-			&& 	( $arg eq q{} 			|| $LOT{$defName}[$index]->{arg}		eq $arg) 
-		   ) {
-			::RemoveInternalTimer($LOT{$defName}[$index]->{arg},$LOT{$defName}[$index]->{func});
-			delete($LOT{$defName}[$index]);
-			$numRemoved++;
-		}  
+      if ( ref $LOT{$defName}[$index] eq 'HASH' && exists	$LOT{$defName}[$index]->{func}
+            &&	(!defined $func 		|| $LOT{$defName}[$index]->{func} 		== $func ) 
+            && 	( $arg eq q{} 			|| $LOT{$defName}[$index]->{arg}		eq $arg) 
+           ) {
+            ::RemoveInternalTimer($LOT{$defName}[$index]->{arg},$LOT{$defName}[$index]->{func});
+            delete $LOT{$defName}[$index];
+            $numRemoved++;
+        }  
     }
     return $numRemoved;
 }
