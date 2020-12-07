@@ -54,6 +54,31 @@ Example:
 | `$arg`                | optional    | Arguments passed to the `$function_ref`, default = `q{}`(empty string) |
 | `$waitIfInitNotDone`  | optional    | **Blocks** FHEM until `$timestamp` is reached, use it only if really needed|
 
+Returnvalue:
+Returns Index of added timer to specify it later user directly
+
+### getTimerByIndex
+If you need all your passed arguments for a timer identified by a index you can use this function.
+
+**getTimerByIndex($name,$index);**
+
+Example:
+
+`FHEM::Core::Timer::Helper::getTimerByIndex( $hash{NAME}, 2);`
+
+| Parameter             | Required?   | Description  |
+| :---------------------|:----------- | :----------  |
+| `$name`               | mandatory   | A label for this timer|
+| `$index`              | mandatory   | The index under which the timer was added |
+
+Returnvalue:
+Returns hashref with fields 
+'arg' which is the passed arg via addTimer, 
+'func' which is a coderef passed via function_ref arg via addTimer, 
+'calltime' which is timestamp passed via timestamp arg via addTimer and
+'initglag' which is value for initflag spcified via addTimer.
+
+
 
 ### removeTimer
 
@@ -69,6 +94,21 @@ Example:
 | `$name`          | mandatory      | Remove timers with the name `$name` |
 | `$function_ref`  | optional       | Remove only timers with name `$name` and set by `$function_ref` |
 | `$arg`           | optional       | Remove only timers with name `$name` and set with `$arg` |
+
+
+### renewTimer
+Call 'renewTimer' if you want to rescedule a timer which is or is not called already.
+
+Example:
+`  FHEM::Core::Timer::Helper::renewTimer($timerHash,gettimeofday+3600); ` updates the given timer to run in a hour from now`
+
+
+| Parameter        | Required?      | Description  |
+| :--------------- | :------------- | :------------|
+| `$TimerHash`     | mandatory      | You can gather this hash from getTimerByIndex |
+| `$newtime`       | mandatory      | Unix timestamp when the timer should run |
+ 
+returns `undef`  on failure or `1` if timer is added with new timestamp
 
 ### optimizeLOT
 

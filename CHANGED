@@ -1,3 +1,14 @@
+2020-12-07 - Merge branch 'feature-timerManagement' of github.com:fhem/lib_timer into feature-timerManagement
+2020-12-07 - lib\FHEM\Core\Timer\Helper.pm
+
+Updated exporter
+2020-12-04 - lib\FHEM\Core\Timer\Helper.pm
+
+code change to remove perl warning "scalar context better written as"
+2020-12-04 - Merge branch 'feature-timerManagement' of github.com:fhem/lib_timer into feature-timerManagement
+2020-11-08 - Added some basic things to allow timermanagement
+
+addTimer now returns the index of the element added and not any longer the number of entrys in the array
 2020-06-11 - Dir change (#2)
 
 Change namespace to FHEM::Core::Timer::Helper
