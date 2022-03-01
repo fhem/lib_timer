@@ -64,7 +64,7 @@ jobs:
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
     - name: Checkout Repostory
-    - uses: actions/checkout@v2.4.0
+      uses: actions/checkout@v2.4.0
       with:
         fetch-depth: 0
         persist-credentials: false
