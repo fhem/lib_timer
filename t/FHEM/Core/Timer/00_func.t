@@ -7,7 +7,7 @@ use Test2::Tools::Compare qw{is};
 
 
 use FHEM::Core::Timer::Helper qw(addTimer removeTimer);
-use Time::HiRes;
+use Time::HiRes qw( gettimeofday );
 
 
 sub timerCallback
@@ -51,7 +51,7 @@ subtest 'add and remove timer by callback func' => sub {
 
 subtest 'add timer with undef coderef (func)' => sub {
 	$count = addTimer('myName',gettimeofday()+1,\&not_there,'addTimer not_there',0);
-	is ($count,0,'addtimer returned zero');
+	is ($count,U(),'addtimer returned undef');
 	is(removeTimer('myName',\&not_there),0,q[check timer can't be removed]);
 };
 
