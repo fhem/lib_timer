@@ -43,12 +43,6 @@ jobs:
     - uses: codecov/codecov-action@v2.1.0
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        file: /opt/fhem/cover_db/clover.xml
-        flags: unittests,fhem,modules
-        name: fhem (testscripts) ${{ matrix.perl }} 
-    - uses: codecov/codecov-action@v2.1.0
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
         file: ./cover_db/clover.xml
         flags: unittests,fhem,modules
         name: fhem (testscripts) ${{ matrix.perl }}
