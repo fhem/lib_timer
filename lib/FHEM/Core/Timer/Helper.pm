@@ -16,10 +16,14 @@ our @EXPORT_OK = qw(addTimer removeTimer optimizeLOT);
 sub addTimer {
 	my $defName 	= shift // carp 'No definition name'	 	&& return;
 	my $time 		= shift	// carp q[No time specified] 		&& return;
-	my $func 		= shift	// carp q[No function specified] 	&& return;
+	my $func 		= shift	// carp q[No function specified] 	&& return;	
 	my $arg 		= shift	// q{};
 	my $initFlag 	= shift	// 0;
 	
+	if (! defined &{$func}) {
+		carp qq[coderef for Name: "$defName" with arg:"$arg" does not exists] ;
+		return;
+	}
 	
 	my %h = (
 			arg		 	=> $arg, 

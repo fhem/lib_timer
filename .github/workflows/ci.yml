@@ -18,13 +18,12 @@ jobs:
       FHEM_DIR: /opt/fhem  
       TEST_FILES: t/FHEM/Core/Timer/*.t  
     steps:
-    - uses: actions/checkout@master
-    - uses: shogo82148/actions-setup-perl@v1
+    - uses: actions/checkout@v2.4.0
+    - uses: shogo82148/actions-setup-perl@v1.14.2
       with:
         perl-version: ${{ matrix.perl }}
-    - run: |
-        cpanm --notest --installdeps .
-        cpanm --notest Devel::Cover::Report::Clover
+        install-modules-with: cpanm
+        install-modules-args: --no-interactive -v --installdeps
     - name: install fhem via deb package
       run: |
         wget -qO - http://debian.fhem.de/archive.key | sudo apt-key add -
@@ -33,8 +32,6 @@ jobs:
         sudo apt-get install fhem -y
         sudo chown -R --reference=cpanfile /opt/fhem
         sudo systemctl stop fhem
-#    - name: Setup tmate session
-#      uses: mxschmitt/action-tmate@v1
     - name: run prove fhem testsuite ${{ matrix.perl }}
       run: |
         cp -r ./lib ${FHEM_DIR}
@@ -43,7 +40,7 @@ jobs:
         cp -r ./cover_db ${GITHUB_WORKSPACE}
     - name: Create clover report  
       run: cover -report clover
-    - uses: codecov/codecov-action@v1
+    - uses: codecov/codecov-action@v2.1.0
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: ./cover_db/clover.xml
@@ -61,12 +58,12 @@ jobs:
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
     - name: Checkout Repostory
-      uses: actions/checkout@master
+      uses: actions/checkout@v2.4.0
       with:
         fetch-depth: 0
         persist-credentials: false
     - name: update controls files
-      uses: fhem/fhem-controls-actions@master
+      uses: fhem/fhem-controls-actions@v2.0.3
       with:
         filename: controls_libtimer.txt 
         directory: lib/FHEM/Core/Timer
